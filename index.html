@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MFD Store | Own Business</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <header class="store-header">
+    <div class="logo">
+      <img src="https://i.postimg.cc/G3Qjxkmt/20250410-212750-(1).png" alt="MFD Store Logo">
+      <h1>MFD Store Own Business</h1>
+    </div>
+    <nav class="auth-nav">
+      <button onclick="openModal('login-modal')">🔑 Login</button>
+      <button onclick="openModal('register-modal')">📝 Register</button>
+    </nav>
+  </header>
+
+  <main class="store-catalog">
+    <div class="catalog-tabs">
+      <button class="tab active" data-tab="trending">🔥 Trending</button>
+      <button class="tab" data-tab="sales">💰 Highest Sales</button>
+      <button class="tab" data-tab="event">🎉 Event Based</button>
+    </div>
+
+    <section class="recommendations">
+      <h2>Recommendations For You</h2>
+      <p>Exclusive deals updated in real-time!</p>
+    </section>
+
+    <div class="ad-banner">Advertisement</div>
+    <div class="product-grid" id="product-grid">
+      <p class="loading">Memuatkan katalog...</p>
+    </div>
+  </main>
+
+  <!-- Modals -->
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Login Account</h2>
+      <button class="primary">LOGIN NOW</button>
+      <p>ATAU</p>
+      <button class="social"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google</button>
+      <p class="switch">New here? <a href="#" onclick="openModal('register-modal')">Register Account</a></p>
+      <button class="close" onclick="closeModal('login-modal')">×</button>
+    </div>
+  </div>
+
+  <div id="register-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Register Account</h2>
+      <button class="primary">REGISTER FREE</button>
+      <p>ATAU</p>
+      <button class="social"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Sign up with Google</button>
+      <p class="switch">Have account? <a href="#" onclick="openModal('login-modal')">Login Here</a></p>
+      <button class="close" onclick="closeModal('register-modal')">×</button>
+    </div>
+  </div>
+
+  <footer class="store-footer">
+    <button class="whatsapp-fab">
+      <img src="https://i.postimg.cc/Bvb6HRzm/whatsapp-logo-3d-render-free-png.png" alt="WA"> Chat Now
+    </button>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

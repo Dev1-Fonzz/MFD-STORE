@@ -146,5 +146,22 @@
     alert('✅ Added to cart! (Demo)');
   };
 </script>
+  <script type="module">
+  import { db } from './assets/js/firebase-config.js';
+  import { getDocs, collection } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  
+  // Test connection
+  getDocs(collection(db, "products"))
+    .then(snapshot => {
+      console.log('✅ Firebase connected! Products:', snapshot.size);
+      document.getElementById('product-grid').innerHTML = 
+        `<p style="color:#10b981">✅ Connected! ${snapshot.size} products loaded</p>`;
+    })
+    .catch(err => {
+      console.error('❌ Firebase error:', err);
+      document.getElementById('product-grid').innerHTML = 
+        `<p style="color:#ef4444">❌ Error: ${err.message}</p>`;
+    });
+</script>
 </body>
 </html>

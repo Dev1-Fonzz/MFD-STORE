@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Dashboard | MFD Store</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="dashboard-layout">
+  <aside class="sidebar">
+    <h3>🏪 Vendor Panel</h3>
+    <nav>
+      <a href="#" class="active">📊 Dashboard</a>
+      <a href="#">📦 Produk</a>
+      <a href="#">📋 Pesanan</a>
+      <a href="#">⚙️ Profil</a>
+      <a href="#">💬 Live Chat</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="stats-grid">
+      <div class="stat-card">💰 Total Sales <span>RM 0.00</span></div>
+      <div class="stat-card">📦 Active Orders <span>0</span></div>
+      <div class="stat-card">🛍️ My Products <span>0</span></div>
+      <div class="stat-card warning">💸 System taxes "must be paid"</div>
+    </div>
+
+    <section class="products-section">
+      <h2>📦 Katalog Produk</h2>
+      <button class="primary">+ Tambah</button>
+      <div class="table-wrapper">
+        <table id="vendor-products">
+          <thead><tr><th>ID</th><th>Gambar</th><th>Nama</th><th>Harga</th><th>Status</th><th>Sold</th><th>Aksi</th></tr></thead>
+          <tbody><tr><td colspan="7">Memuatkan produk...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="orders-section">
+      <h2>📋 Pesanan Masuk</h2>
+      <div class="order-filters">
+        <button class="filter active">Semua Status</button><button class="filter">⏳ To Pay</button>
+        <button class="filter">🚚 To Ship</button><button class="filter">📦 To Receive</button>
+        <button class="filter">✅ Completed</button><button class="filter">❌ Cancelled</button>
+      </div>
+      <div class="table-wrapper">
+        <table id="vendor-orders">
+          <thead><tr><th>Order ID</th><th>Pelanggan</th><th>Item</th><th>Qty</th><th>Total</th><th>Payment</th><th>Status</th><th>Tracking</th><th>Tarikh</th><th>Aksi</th></tr></thead>
+          <tbody><tr><td colspan="10">Memuatkan pesanan...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="vendor-settings">
+      <h2>⚙️ Maklumat Penjual & Payment</h2>
+      <form id="vendor-payment">
+        <label>Seller Name</label><input type="text">
+        <label>Business Name</label><input type="text">
+        <label>Phone</label><input type="tel">
+        <label>Email</label><input type="email">
+        <label>Full Address</label><textarea></textarea>
+        <h3>💳 Default Payment Settings</h3>
+        <p class="note">*Maklumat ini akan auto-fill bila tambah produk baru</p>
+        <label>🔗 Default Payment Link</label><input type="url">
+        <label>🖼️ Default QR URL</label><input type="url">
+        <label>🏦 Default Bank</label><input type="text">
+        <label>🔢 Default Account No + Name</label><input type="text">
+        <button class="primary">💾 Simpan</button>
+        <button class="danger">🗑️ Delete Account</button>
+      </form>
+    </section>
+
+    <section class="performance-section">
+      <h2>📊 Skor Prestasi & Polisi Penjual</h2>
+      <div class="perf-card">
+        <span class="badge active">AKTIF</span>
+        <p>Mata Demerit: 0 | Had Maksimum: 100</p>
+        <p>Kadar Pembatalan: 0% | Had Maksimum: 10%</p>
+        <p>Status Withdraw: <span class="badge success">DIBENARKAN</span></p>
+      </div>
+      <div class="notice-box">
+        <h3>⚠️ Notis Polisi Terkini</h3>
+        <p>✓ Tiada notis baru.</p>
+        <button>📋 Lihat Log Pelanggaran</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

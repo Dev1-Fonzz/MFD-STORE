@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/admin", "destination": "/admin/dashboard", "permanent": true },
+    { "source": "/vendor", "destination": "/vendor/login", "permanent": true }
+  ]
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin | MFD Store</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="dashboard-layout">
+  <aside class="sidebar admin-sidebar">
+    <h3>👑 Admin Center</h3>
+    <nav>
+      <a href="#" class="active">📊 Overview</a>
+      <a href="management.html">🛡️ Management</a>
+      <a href="#">⚙️ Settings</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="admin-stats">
+      <div class="stat">Total Vendors <span>-</span></div>
+      <div class="stat">Total Orders <span>-</span></div>
+      <div class="stat">Total Revenue <span>RM -</span></div>
+      <div class="stat">Blocked Vendors <span>-</span></div>
+    </div>
+
+    <section class="admin-vendors">
+      <h2>👥 Senarai Vendor</h2>
+      <div class="table-wrapper">
+        <table id="admin-vendor-list">
+          <thead><tr><th>UAC</th><th>Vendor</th><th>Email</th><th>Sales</th><th>Status</th><th>Joined</th><th>Aksi</th></tr></thead>
+          <tbody><tr><td colspan="7">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-transactions">
+      <h2>💰 Semua Transaksi</h2>
+      <div class="order-filters">
+        <button class="filter active">Semua</button><button class="filter">To Pay</button>
+        <button class="filter">Completed</button><button class="filter">Cancelled</button>
+      </div>
+      <div class="table-wrapper">
+        <table id="admin-transactions">
+          <thead><tr><th>Order ID</th><th>Vendor</th><th>Customer</th><th>Item</th><th>Total</th><th>Status</th><th>Tarikh</th></tr></thead>
+          <tbody><tr><td colspan="7">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="system-settings">
+      <h2>⚙️ System Settings</h2>
+      <label>Kadar Komisen Default</label>
+      <input type="number" placeholder="RM / jualan">
+      <button class="primary">💾 Save Settings</button>
+    </section>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

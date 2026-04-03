@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Login | MFD Store</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <h2>🏪 Vendor Manager</h2>
+    <div class="tabs">
+      <button class="tab active" data-target="v-login">Login</button>
+      <button class="tab" data-target="v-register">Register</button>
+    </div>
+
+    <form id="v-login" class="auth-form">
+      <h3>Akses panel pengurusan anda</h3>
+      <input type="email" placeholder="Email *" required>
+      <input type="password" placeholder="Password *" required>
+      <button type="submit" class="primary">Login</button>
+      <p>ATAU</p>
+      <button type="button" class="social"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G"> Google</button>
+      <button type="button" class="social"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/github.svg" alt="GH"> GitHub</button>
+      <p class="switch">Belum ada akaun? <a href="#" onclick="switchAuth('v-register')">Daftar Sekarang →</a></p>
+    </form>
+
+    <form id="v-register" class="auth-form hidden">
+      <h3>Mula jualan dengan MFD Store</h3>
+      <input type="text" placeholder="Business *" required>
+      <input type="tel" placeholder="Phone *" required>
+      <input type="email" placeholder="Email *" required>
+      <input type="password" placeholder="Password (min 6) *" required>
+      <button type="submit" class="primary">Register Free</button>
+      <p class="switch">Sudah ada akaun? <a href="#" onclick="switchAuth('v-login')">Login →</a></p>
+    </form>
+  </div>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

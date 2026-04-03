@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MFD Store | Own Business</title>
   <link rel="stylesheet" href="assets/css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
   <header class="store-header">
@@ -66,5 +68,83 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
+  <script type="module">
+  // Import Firebase & Logic
+  import { observeAuthState, logoutUser } from './assets/js/auth.js';
+  import { subscribePublicProducts } from './assets/js/crud-products.js';
+  import { formatMYR, getStatusClass } from './assets/js/utils.js';
+  
+  // 🎯 Initialize App
+  document.addEventListener('DOMContentLoaded', () => {
+    // Auth Observer
+    observeAuthState(({ user, role, profile }) => {
+      const authNav = document.querySelector('.auth-nav');
+      if (user) {
+        authNav.innerHTML = `
+          <span class="user-greeting">Hi, ${profile?.username || profile?.businessName} 👋</span>
+          <a href="/${role}/dashboard.html" class="btn-primary">Dashboard</a>
+          <button onclick="handleLogout()" class="btn-outline">Logout</button>
+        `;
+      } else {
+        authNav.innerHTML = `
+          <button onclick="openModal('login-modal')" class="btn-outline">🔑 Login</button>
+          <button onclick="openModal('register-modal')" class="btn-primary">📝 Register</button>
+        `;
+      }
+    });
+    
+    // Load Products (Real-time)
+    subscribePublicProducts({}, (products) => {
+      const grid = document.getElementById('product-grid');
+      if (products.length === 0) {
+        grid.innerHTML = '<p class="empty-state">Tiada produk tersedia buat masa ini.</p>';
+        return;
+      }
+      
+      grid.innerHTML = products.map(p => `
+        <article class="product-card" data-id="${p.id}">
+          <div class="product-image">
+            <img src="${p.image || 'https://via.placeholder.com/200'}" alt="${p.name}" loading="lazy">
+            ${p.eventTags?.map(tag => `<span class="event-badge">${tag}</span>`).join('') || ''}
+          </div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p class="price">${formatMYR(p.price)}</p>
+            <div class="product-meta">
+              <span class="rating">⭐ ${p.rating?.toFixed(1) || 'New'}</span>
+              <span class="sold">🛒 ${p.sold || 0} sold</span>
+            </div>
+            <button class="btn-primary" onclick="addToCart('${p.id}')">Add to Cart</button>
+          </div>
+        </article>
+      `).join('');
+    });
+    
+    // Tab Filtering
+    document.querySelectorAll('.catalog-tabs .tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.catalog-tabs .tab').forEach(t => t.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        
+        const filter = e.currentTarget.dataset.tab;
+        subscribePublicProducts(
+          filter === 'event' ? { eventTag: 'Trending' } : {},
+          (products) => { /* re-render logic */ }
+        );
+      });
+    });
+  });
+  
+  // 🌐 Global Functions for HTML onclick
+  window.handleLogout = async () => {
+    const result = await logoutUser();
+    if (result.success) window.location.reload();
+  };
+  
+  window.addToCart = (productId) => {
+    // Implement cart logic or redirect to checkout
+    alert('✅ Added to cart! (Demo)');
+  };
+</script>
 </body>
 </html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard | MFD Store</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="dashboard-layout">
+  <aside class="sidebar">
+    <h3>👤 Customer Panel</h3>
+    <nav>
+      <a href="#" class="active">📊 Profil</a>
+      <a href="#">📦 Pesanan Saya</a>
+      <a href="#">🛡️ Pematuhan</a>
+      <a href="#">💬 Live Chat</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <section class="profile-section">
+      <h2>⚙️ Maklumat Akaun</h2>
+      <form id="customer-profile">
+        <label>Username</label><input type="text" id="username" disabled>
+        <label>Status</label><span class="badge active">ACTIVE</span>
+        <label>Phone</label><input type="text" id="phone" placeholder="-">
+        <label>Shipping Address</label>
+        <select id="ship-address"><option>Home</option><option>Work</option></select>
+        <button type="button">Save Changes</button>
+        <button type="button" class="danger">Delete Account Permanently</button>
+      </form>
+    </section>
+
+    <section class="compliance-section">
+      <h2>🛡️ Status Pematuhan Akaun</h2>
+      <div class="compliance-card">
+        <span class="status">AKAUN BAIK</span>
+        <p>Mata Demerit: 0/100 | Tahap Risiko: RENDAH</p>
+        <button>📑 Rayuan / Bantuan</button>
+        <button>🚫 Lapor Penjual (IP/Palsu)</button>
+      </div>
+      <div class="appeal-box">
+        <h3>Hubungi Admin Untuk Rayuan</h3>
+        <textarea placeholder="Tulis rayuan..."></textarea>
+        <button>Hantar Rayuan</button>
+        <button>Hantar Aduan Rasmi (Hak Cipta/Produk Palsu)</button>
+      </div>
+    </section>
+
+    <section class="orders-section">
+      <h2>📋 My Orders | Live Update</h2>
+      <div class="order-filters">
+        <button class="filter active">All</button><button class="filter">To Pay</button>
+        <button class="filter">To Ship</button><button class="filter">To Receive</button>
+        <button class="filter">Completed</button><button class="filter">Return</button>
+        <button class="filter">Cancelled</button>
+      </div>
+      <div class="table-wrapper">
+        <table id="customer-orders">
+          <thead><tr><th>Username</th><th>Nama Item</th><th>Kode Unik</th><th>Address</th><th>Qty</th><th>Harga</th><th>Payment</th><th>Status</th><th>Delivery</th><th>Tracking</th><th>ID</th><th>Rating</th><th>Tindakan</th></tr></thead>
+          <tbody><tr><td colspan="13" class="empty">Tiada sejarah pesanan ditemui.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

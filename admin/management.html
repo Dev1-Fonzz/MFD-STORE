@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Management | MFD Store</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="dashboard-layout">
+  <aside class="sidebar admin-sidebar">
+    <h3>👑 Admin Center</h3>
+    <nav>
+      <a href="dashboard.html">📊 Overview</a>
+      <a href="#" class="active">🛡️ Management</a>
+      <a href="#">⚙️ Settings</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <h2>🛡️ Pusat Penguatkuasaan & Pengurusan</h2>
+    <div class="mgmt-tabs">
+      <button class="tab active" data-tab="db-users">👥 Database Akaun</button>
+      <button class="tab" data-tab="verify-orders">✅ Pengesahan Pesanan</button>
+      <button class="tab" data-tab="manage-orders">📦 Urus Pesanan</button>
+      <button class="tab" data-tab="products">📦 Produk</button>
+      <button class="tab" data-tab="blacklist">⚠️ Blacklist</button>
+      <button class="tab" data-tab="enforcement">🚫 Penguatkuasaan</button>
+      <button class="tab" data-tab="devices">📱 Device Monitor</button>
+      <button class="tab" data-tab="bans">⚙️ Ban Config</button>
+      <button class="tab" data-tab="live-chat">💬 Live Agent</button>
+    </div>
+
+    <section id="db-users" class="tab-content active">
+      <h3>📊 Database Akaun Pelanggan</h3>
+      <div class="table-wrapper"><table><thead><tr><th>UAC</th><th>Username</th><th>Phone</th><th>Status</th><th>Total Order</th><th>Tindakan</th></tr></thead><tbody><tr><td colspan="6">Loading...</td></tr></tbody></table></div>
+    </section>
+
+    <section id="verify-orders" class="tab-content">
+      <h3>✅ Pengesahan Pembelian Pelanggan</h3>
+      <div class="table-wrapper"><table><thead><tr><th>UAC</th><th>Nama Item</th><th>Kode Unik</th><th>Total</th><th>Payment Status</th><th>Tracking</th><th>Tindakan</th></tr></thead><tbody><tr><td colspan="7">Loading...</td></tr></tbody></table></div>
+    </section>
+
+    <section id="blacklist" class="tab-content">
+      <h3>⚠️ Senarai Hitam Pelanggan</h3>
+      <p class="note">Akaun yang diblacklist tidak boleh login, order, atau chat.</p>
+      <div class="table-wrapper"><table><thead><tr><th>UAC</th><th>Username</th><th>Status</th><th>Comment</th><th>Tindakan</th></tr></thead><tbody><tr><td colspan="5">Tiada akaun dalam blacklist.</td></tr></tbody></table></div>
+    </section>
+
+    <section id="bans" class="tab-content">
+      <h3>⚙️ Ban Configuration</h3>
+      <div class="ban-config">
+        <label>Ban if Risk Score ≥</label><input type="number" value="70">
+        <label>Default Ban Duration</label>
+        <select><option>1 Hari</option><option>7 Hari</option><option>30 Hari</option><option>Permanent</option></select>
+        <button class="primary">💾 Save</button>
+        <h4>Manual Ban</h4>
+        <div class="manual-ban">
+          <input type="text" placeholder="UID/Device ID">
+          <select><option>Ban Device Sahaja</option><option>Ban User Account</option><option>Ban Both</option></select>
+          <button class="danger">⚡ Apply Ban</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="live-chat" class="tab-content">
+      <h3>Live Agent Dashboard (Owner)</h3>
+      <div class="chat-panel">
+        <div class="contact-list">Loading contacts...</div>
+        <div class="chat-window">
+          <div class="messages">Select a customer to start chat</div>
+          <input type="text" placeholder="Type message...">
+          <button>Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

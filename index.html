@@ -68,100 +68,122 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
-  <script type="module">
-  // Import Firebase & Logic
-  import { observeAuthState, logoutUser } from './assets/js/auth.js';
-  import { subscribePublicProducts } from './assets/js/crud-products.js';
-  import { formatMYR, getStatusClass } from './assets/js/utils.js';
+<!-- Firebase SDK (Direct CDN - No module import issues) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔥 Firebase Config - GANTI DENGAN CONFIG ANDA
+  const firebaseConfig = {
+            apiKey: "AIzaSyDMrexlgTwauuqmZ2kZECwqqEYmwtj7Zrs",
+            authDomain: "mfd-store.firebaseapp.com",
+            projectId: "mfd-store",
+            storageBucket: "mfd-store.firebasestorage.app",
+            messagingSenderId: "1039564529069",            appId: "1:1039564529069:web:bc7c752f3618e6cb879524"
+        };
+        
+  // Initialize Firebase (Compat version - more reliable for vanilla JS)
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
   
-  // 🎯 Initialize App
-  document.addEventListener('DOMContentLoaded', () => {
-    // Auth Observer
-    observeAuthState(({ user, role, profile }) => {
-      const authNav = document.querySelector('.auth-nav');
-      if (user) {
-        authNav.innerHTML = `
-          <span class="user-greeting">Hi, ${profile?.username || profile?.businessName} 👋</span>
-          <a href="/${role}/dashboard.html" class="btn-primary">Dashboard</a>
-          <button onclick="handleLogout()" class="btn-outline">Logout</button>
-        `;
-      } else {
-        authNav.innerHTML = `
-          <button onclick="openModal('login-modal')" class="btn-outline">🔑 Login</button>
-          <button onclick="openModal('register-modal')" class="btn-primary">📝 Register</button>
-        `;
-      }
-    });
+  // 🎨 Helper: Format Currency
+  const formatMYR = (amount) =>
+    new Intl.NumberFormat('ms-MY', { style: 'currency', currency: 'MYR' }).format(amount);
+  
+  // 🎨 Helper: Status Badge
+  const getStatusBadge = (status) => {
+    const colors = { 'Public': 'active', 'Private': 'warning', 'Deleted': 'danger' };
+    return `<span class="badge ${colors[status] || 'secondary'}">${status}</span>`;
+  };
+  
+  // 🔄 Render Products to DOM
+  const renderProducts = (products) => {
+    const grid = document.getElementById('product-grid');
+    if (!grid) {
+      console.error('❌ Element #product-grid not found!');
+      return;
+    }
     
-    // Load Products (Real-time)
-    subscribePublicProducts({}, (products) => {
-      const grid = document.getElementById('product-grid');
-      if (products.length === 0) {
-        grid.innerHTML = '<p class="empty-state">Tiada produk tersedia buat masa ini.</p>';
-        return;
-      }
-      
-      grid.innerHTML = products.map(p => `
-        <article class="product-card" data-id="${p.id}">
-          <div class="product-image">
-            <img src="${p.image || 'https://via.placeholder.com/200'}" alt="${p.name}" loading="lazy">
-            ${p.eventTags?.map(tag => `<span class="event-badge">${tag}</span>`).join('') || ''}
+    if (!products || products.length === 0) {
+      grid.innerHTML = '<p class="empty-state">Tiada produk tersedia.</p>';
+      return;
+    }
+    
+    grid.innerHTML = products.map(p => {
+      const data = p.data ? p.data() : p; // Handle both DocumentSnapshot & plain object
+      return `
+        <article class="product-card" data-id="${p.id || data.id}">          <div class="product-image">
+            <img src="${data.image || 'https://via.placeholder.com/200'}" 
+                 alt="${data.name}" 
+                 loading="lazy"
+                 onerror="this.src='https://via.placeholder.com/200?text=No+Image'">
+            ${data.eventTags ? `<span class="event-badge">${data.eventTags[0]}</span>` : ''}
           </div>
           <div class="product-info">
-            <h3>${p.name}</h3>
-            <p class="price">${formatMYR(p.price)}</p>
+            <h3>${data.name || 'Unknown Product'}</h3>
+            <p class="price">${formatMYR(data.price)}</p>
             <div class="product-meta">
-              <span class="rating">⭐ ${p.rating?.toFixed(1) || 'New'}</span>
-              <span class="sold">🛒 ${p.sold || 0} sold</span>
+              <span class="rating">⭐ ${data.rating?.toFixed(1) || 'New'}</span>
+              <span class="sold">🛒 ${data.sold || 0} sold</span>
             </div>
-            <button class="btn-primary" onclick="addToCart('${p.id}')">Add to Cart</button>
+            <button class="btn-primary" onclick="addToCart('${p.id || data.id}')">
+              Add to Cart
+            </button>
           </div>
         </article>
-      `).join('');
-    });
+      `;
+    }).join('');
     
-    // Tab Filtering
-    document.querySelectorAll('.catalog-tabs .tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
-        document.querySelectorAll('.catalog-tabs .tab').forEach(t => t.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-        
-        const filter = e.currentTarget.dataset.tab;
-        subscribePublicProducts(
-          filter === 'event' ? { eventTag: 'Trending' } : {},
-          (products) => { /* re-render logic */ }
-        );
+    console.log(`✅ Rendered ${products.length} products`);
+  };
+  
+  // 🚀 Load Products on Page Load
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔍 Loading products...');
+    
+    // Simple getDocs (no complex query for testing)
+    db.collection('products')
+      .where('status', '==', 'Public')
+      .orderBy('createdAt', 'desc')
+      .limit(20)
+      .get()
+      .then(snapshot => {
+        console.log(`✅ Loaded ${snapshot.size} products`);
+        const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderProducts(products);
+      })
+      .catch(error => {
+        console.error('❌ Error loading products:', error);
+        document.getElementById('product-grid').innerHTML =
+          `<p style="color:#ef4444">Error: ${error.message}</p>`;
       });
-    });
+    
+    // 🔄 Real-time listener (optional - for live updates)
+    // db.collection('products').where('status', '==', 'Public')
+    //   .onSnapshot(snapshot => {
+    //     const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));    //     renderProducts(products);
+    //   });
   });
   
-  // 🌐 Global Functions for HTML onclick
-  window.handleLogout = async () => {
-    const result = await logoutUser();
-    if (result.success) window.location.reload();
-  };
-  
+  // 🛒 Dummy Cart Function
   window.addToCart = (productId) => {
-    // Implement cart logic or redirect to checkout
     alert('✅ Added to cart! (Demo)');
+    // Implement cart logic here later
   };
-</script>
-  <script type="module">
-  import { db } from './assets/js/firebase-config.js';
-  import { getDocs, collection } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
   
-  // Test connection
-  getDocs(collection(db, "products"))
-    .then(snapshot => {
-      console.log('✅ Firebase connected! Products:', snapshot.size);
-      document.getElementById('product-grid').innerHTML = 
-        `<p style="color:#10b981">✅ Connected! ${snapshot.size} products loaded</p>`;
-    })
-    .catch(err => {
-      console.error('❌ Firebase error:', err);
-      document.getElementById('product-grid').innerHTML = 
-        `<p style="color:#ef4444">❌ Error: ${err.message}</p>`;
-    });
+  // 🔐 Auth UI Toggle (Simple)
+  auth.onAuthStateChanged(user => {
+    const authNav = document.querySelector('.auth-nav');
+    if (user && authNav) {
+      authNav.innerHTML = `
+        <span style="margin-right:1rem">Hi, ${user.displayName || user.email}</span>
+        <a href="/customer/dashboard.html" class="btn-primary">Dashboard</a>
+        <button onclick="firebase.auth().signOut()" class="btn-outline">Logout</button>
+      `;
+    }
+  });
 </script>
 </body>
 </html>
